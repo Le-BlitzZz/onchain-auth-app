@@ -1,0 +1,15 @@
+# Local build files and directories
+/authonchain
+/authonchain-*
+
+# Custom config, database, log, and temporary files
+.dockerignore
+Dockerfile
+docker-compose*
+compose.yaml
+
+# Automatically generated files, e.g. by editors and operating systems
+.DS_Store
+.DS_Store?
+._*
+.idea

@@ -1,0 +1,17 @@
+services:
+  ## AuthOnchain (Development Environment)
+  authonchain:
+    build: .
+    image: authonchain/authonchain:develop
+    # Expose HTTP port
+    ports:
+      - "8080:8080"
+    working_dir: "/go/src/github.com/Le-BlitzZz/onchain-auth-app"
+    volumes:
+      - ".:/go/src/github.com/Le-BlitzZz/onchain-auth-app"
+      - "go-mod:/go/pkg/mod"
+
+## Create named volume for Go module cache
+volumes:
+  go-mod:
+    driver: local

@@ -1,0 +1,5 @@
+services:
+  authonchain:
+    image: authonchain/authonchain:1.24.1-alpine3.21
+    ports:
+      - "8080:8080"
