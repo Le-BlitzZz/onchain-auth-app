@@ -4,6 +4,8 @@ DESTDIR ?= /opt/$(APP_NAME)
 
 HAS_DOCKER_COMPOSE_WITH_DASH := $(shell which docker-compose)
 
+DEBUG_PORT ?= 40000
+
 
 ifdef HAS_DOCKER_COMPOSE_WITH_DASH
 	DOCKER_COMPOSE=docker-compose
@@ -27,3 +29,11 @@ docker-prod:
 docker-dev:
 	docker pull golang:1.24.1-alpine3.21
 	scripts/docker/build.sh develop
+debug-go:
+	dlv --listen=:$(DEBUG_PORT) \
+	--headless=true \
+	--log=true \
+	--log-output=debugger,debuglineerr,gdbwire,lldbout,rpc \
+	--accept-multiclient \
+	--api-version=2 \
+	exec ./$(APP_NAME) -- start

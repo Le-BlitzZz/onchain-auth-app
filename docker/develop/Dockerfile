@@ -4,7 +4,9 @@ FROM golang:1.24.1-alpine3.21
 COPY --chmod=755 /scripts/ /scripts/
 
 # Add dependencies
-RUN apk add --no-cache bash make
+RUN apk add --no-cache bash make && \
+    echo "Installing Go debugger..." && \
+    go install github.com/go-delve/delve/cmd/dlv@latest
 
 # Set default working directory.
 WORKDIR "/go/src/github.com/Le-BlitzZz/onchain-auth-app"

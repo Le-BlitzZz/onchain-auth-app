@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 // StartCommand configures the command name and action.
@@ -19,20 +20,26 @@ var StartCommand = &cli.Command{
 
 // startAction starts the Web server.
 func startAction(ctx *cli.Context) error {
+	conf := InitConfig(ctx)
+
+	if conf.HttpPort() < 1 || conf.HttpPort() > 65535 {
+		log.Fatal("Server port must be a number between 1 and 65535")
+	}
+
+	// Pass this context down the chain.
 	cctx, cancel := context.WithCancel(context.Background())
 
-	go server.Start(cctx)
+	// Start built-in web server.
+	go server.Start(cctx, conf)
 
+	// Wait for signal to trigger server shutdown or restart.
 	signal.Notify(process.Signal, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
-	sig := <-process.Signal
+	<-process.Signal
 
 	log.Info("Shutting down...")
 	cancel()
 
-	if sig == syscall.SIGTERM {
-		os.Exit(1)
-		return nil
-	}
+	time.Sleep(2 * time.Second)
 
 	return nil
 }

@@ -11,7 +11,7 @@ BUILD_BIN=${1:-authonchain}
 
 echo "Building AuthOnchain..."
 
-BUILD_CMD=(go build -o "${BUILD_BIN}" cmd/authonchain/app.go)
+BUILD_CMD=(go build -gcflags="all=-N -l" -o "${BUILD_BIN}" cmd/authonchain/app.go)
 
 # Build app binary.
 echo "=> compiling \"$BUILD_BIN\""

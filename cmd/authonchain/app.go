@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Le-BlitzZz/onchain-auth-app/internal/commands"
+	"github.com/Le-BlitzZz/onchain-auth-app/internal/config"
 	"github.com/Le-BlitzZz/onchain-auth-app/internal/event"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -13,6 +14,7 @@ var log = event.Log
 const appName = "AuthOnchain"
 const appAbout = "AuthOnchain"
 
+// Metadata contains build specific information.
 var Metadata = map[string]interface{}{
 	"Name":    appName,
 	"About":   appAbout,
@@ -30,6 +32,7 @@ func main() {
 	app.Usage = appAbout
 	app.Version = version
 	app.EnableBashCompletion = true
+	app.Flags = config.Flags.Cli()
 	app.Commands = commands.AuthOnchain
 	app.Metadata = Metadata
 
