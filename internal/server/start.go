@@ -27,6 +27,12 @@ func Start(ctx context.Context, conf *config.Config) {
 	// Create default router engine.
 	router := gin.Default()
 
+	// Find and load templates.
+	router.LoadHTMLFiles(conf.TemplateFiles()...)
+
+	// Register application routes.
+	registerRoutes(router, conf)
+
 	// Create a new HTTP server instance.
 	server := &http.Server{
 		Handler: router,

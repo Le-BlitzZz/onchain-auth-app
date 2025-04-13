@@ -20,14 +20,21 @@ install:
 	@echo "AuthOnchain has been successfully installed in \"$(DESTDIR)\".\nEnjoy!"
 terminal:
 	$(DOCKER_COMPOSE) exec -u root $(APP_NAME) bash
+dep-js:
+	(cd frontend && npm ci --no-update-notifier --no-audit)
+build-js:
+	(cd frontend && npm run build)
 build-go:
 	rm -f $(APP_NAME)
 	./scripts/build.sh $(APP_NAME)
+watch-js:
+	(cd frontend &&	env BUILD_ENV=development NODE_ENV=production npm run watch)
 docker-all: docker-dev docker-prod
 docker-prod:
 	scripts/docker/build.sh authonchain
 docker-dev:
 	docker pull golang:1.24.1-alpine3.21
+	docker pull node:22-alpine3.21
 	scripts/docker/build.sh develop
 debug-go:
 	dlv --listen=:$(DEBUG_PORT) \

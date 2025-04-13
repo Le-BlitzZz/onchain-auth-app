@@ -1,5 +1,8 @@
 # Ignore temporary build files, dependencies, logs, and test output:
+/frontend/node_modules/*
 /authonchain
+/authonchain-*
+/assets/static/build/
 
 # Files created automatically by editors and/or operating systems:
 .DS_Store

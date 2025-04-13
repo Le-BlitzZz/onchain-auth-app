@@ -9,8 +9,11 @@ import (
 // Application code should retrieve option values via getter functions since they provide
 // validation and return defaults if a value is empty.
 type Options struct {
-	HttpHost string `flag:"http-host"`
-	HttpPort int    `flag:"http-port"`
+	DefaultUser     string `flag:"default-user"`
+	DefaultPassword string `flag:"default-password"`
+	HttpHost        string `flag:"http-host"`
+	HttpPort        int    `flag:"http-port"`
+	AssetsPath      string `flag:"assets-path"`
 }
 
 // NewOptions creates a new configuration entity by using ApplyCliContext
