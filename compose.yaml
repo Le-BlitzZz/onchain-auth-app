@@ -3,6 +3,9 @@ services:
   authonchain:
     build: .
     image: authonchain/authonchain:develop
+    depends_on:
+      - mariadb
+    stop_grace_period: 10s
     # Expose HTTP port and debug port
     ports:
       - "8080:8080"   # Default HTTP port (host:container)
@@ -13,13 +16,36 @@ services:
       AUTHONCHAIN_DEFAULT_PASSWORD: "password"
       AUTHONCHAIN_HTTP_HOST: "0.0.0.0"
       AUTHONCHAIN_HTTP_PORT: 8080
+      AUTHONCHAIN_DATABASE_DRIVER: "mysql"
+      AUTHONCHAIN_DATABASE_SERVER: "mariadb:4001"
+      AUTHONCHAIN_DATABASE_NAME: "authonchain"
+      AUTHONCHAIN_DATABASE_USER: "root"
+      AUTHONCHAIN_DATABASE_PASSWORD: "authonchain"
       AUTHONCHAIN_ASSETS_PATH: "/go/src/github.com/Le-BlitzZz/onchain-auth-app/assets"
     working_dir: "/go/src/github.com/Le-BlitzZz/onchain-auth-app"
     volumes:
       - ".:/go/src/github.com/Le-BlitzZz/onchain-auth-app"
       - "go-mod:/go/pkg/mod"
 
+  ## MariaDB (Database Server)
+  mariadb:
+    image: mariadb:11
+    command: --port=4001 --innodb-strict-mode=1 --innodb-buffer-pool-size=256M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
+    expose:
+      - "4001"
+    ports:
+      - "4001:4001"
+    volumes:
+      - "mariadb:/var/lib/mysql"
+    environment:
+      MARIADB_DATABASE: "authonchain"
+      MARIADB_USER: "authonchain"
+      MARIADB_PASSWORD: "authonchain"
+      MARIADB_ROOT_PASSWORD: "authonchain"
+
 ## Create named volume for Go module cache
 volumes:
   go-mod:
+    driver: local
+  mariadb:
     driver: local

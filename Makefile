@@ -20,6 +20,8 @@ install:
 	@echo "AuthOnchain has been successfully installed in \"$(DESTDIR)\".\nEnjoy!"
 terminal:
 	$(DOCKER_COMPOSE) exec -u root $(APP_NAME) bash
+mariadb:
+	$(DOCKER_COMPOSE) exec mariadb mariadb -uroot -pauthonchain authonchain
 dep-js:
 	(cd frontend && npm ci --no-update-notifier --no-audit)
 build-js:

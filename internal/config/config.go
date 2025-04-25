@@ -24,6 +24,17 @@ func NewConfig(ctx *cli.Context) *Config {
 	return c
 }
 
+func (c *Config) Init() error {
+	if err := c.connectDb(); err != nil {
+		return err
+	}
+
+	// Show log message.
+	log.Debug("Config: successfully initialized")
+
+	return nil
+}
+
 // GetConfig returns app config.
 func GetConfig() *Config {
 	return c

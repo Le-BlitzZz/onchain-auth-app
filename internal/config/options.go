@@ -1,19 +1,27 @@
 package config
 
 import (
-	"github.com/urfave/cli/v2"
 	"reflect"
+
+	"github.com/urfave/cli/v2"
 )
 
 // Options hold the global configuration values without further validation or processing.
 // Application code should retrieve option values via getter functions since they provide
 // validation and return defaults if a value is empty.
 type Options struct {
-	DefaultUser     string `flag:"default-user"`
-	DefaultPassword string `flag:"default-password"`
-	HttpHost        string `flag:"http-host"`
-	HttpPort        int    `flag:"http-port"`
-	AssetsPath      string `flag:"assets-path"`
+	DefaultUser      string `flag:"default-user"`
+	DefaultPassword  string `flag:"default-password"`
+	AssetsPath       string `flag:"assets-path"`
+	HttpHost         string `flag:"http-host"`
+	HttpPort         int    `flag:"http-port"`
+	DatabaseDriver   string `flag:"database-driver"`
+	DatabaseDsn      string `flag:"database-dsn"`
+	DatabaseName     string `flag:"database-name"`
+	DatabaseServer   string `flag:"database-server"`
+	DatabaseUser     string `flag:"database-user"`
+	DatabasePassword string `flag:"database-password"`
+	DatabaseTimeout  int    `flag:"database-timeout"`
 }
 
 // NewOptions creates a new configuration entity by using ApplyCliContext

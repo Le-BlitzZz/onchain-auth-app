@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var InitConfig = func(ctx *cli.Context) *config.Config {
-	return config.NewConfig(ctx)
+func InitConfig(ctx *cli.Context) (*config.Config, error) {
+	cfg := config.NewConfig(ctx)
+	return cfg, cfg.Init()
 }

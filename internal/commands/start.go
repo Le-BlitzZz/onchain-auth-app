@@ -20,7 +20,11 @@ var StartCommand = &cli.Command{
 
 // startAction starts the Web server.
 func startAction(ctx *cli.Context) error {
-	conf := InitConfig(ctx)
+	conf, err := InitConfig(ctx)
+
+	if err != nil {
+		return err
+	}
 
 	if conf.HttpPort() < 1 || conf.HttpPort() > 65535 {
 		log.Fatal("Server port must be a number between 1 and 65535")
@@ -28,6 +32,9 @@ func startAction(ctx *cli.Context) error {
 
 	// Pass this context down the chain.
 	cctx, cancel := context.WithCancel(context.Background())
+
+	// Initialize the index database.
+	conf.InitDb()
 
 	// Start built-in web server.
 	go server.Start(cctx, conf)
